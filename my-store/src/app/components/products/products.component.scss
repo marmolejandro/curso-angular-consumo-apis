@@ -1,0 +1,46 @@
+p.total{
+  position: sticky;
+  top: 66px;
+  background: white;
+  padding: 4px;
+  font-weight: 600;
+  text-align: end;
+  span{
+    font-weight: 500;
+  }
+}
+
+p.counter{
+  font-weight: 600;
+  text-align: end;
+  padding-bottom: 4px;
+  span{
+    font-weight: 500;
+  }
+}
+
+.products-grid{
+  display: flex;
+  flex-direction: column;
+}
+
+// Tablets
+@media screen and (min-width: 40em) and (max-width: 63.9em){
+
+  .products-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 15px;
+  }
+}
+
+
+// Web
+@media screen and (min-width: 64em){
+
+  .products-grid{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 15px;
+  }
+}
