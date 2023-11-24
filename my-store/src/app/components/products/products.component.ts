@@ -13,8 +13,8 @@ export class ProductsComponent implements OnInit {
   myShoppingCart: Product[] = [];
   total = 0;
   products: Product[] = [];
-  today = new Date();
-  date = new Date(2023,12,21);
+  showProductDetail = false;
+  productChosen!: Product;
 
   constructor(
     private storeService: StoreService,
@@ -29,14 +29,46 @@ export class ProductsComponent implements OnInit {
     this.productsService.getAllProducts()
                         .subscribe(data => {
       this.products = data;
+      this.products = this.replaceImages(this.products);
       // console.log(data)
     })
   }
 
   onAddToShoppingCart(product: Product){
-    console.log(product)
+    // console.log(product)
     this.storeService.addProducto(product);
 
     this.total = this.storeService.getTotal();
+  }
+
+  toggleProductDetail(){
+    this.showProductDetail = !this.showProductDetail;
+  }
+
+  onShowDetail(id: string){
+    this.productsService.getProductById(id)
+                        .subscribe(data => {
+                          this.toggleProductDetail();
+                          this.productChosen = data;
+
+                          this.productChosen.images = [
+                            'https://source.unsplash.com/random',
+                            'https://source.unsplash.com/random'
+                          ];
+                        })
+  }
+
+  replaceImages(products: Product[]){
+
+    products.every((elem, index) => {
+      elem.images = [
+        'https://source.unsplash.com/random',
+        'https://source.unsplash.com/random'
+      ];
+
+      return elem;
+    })
+
+    return products;
   }
 }

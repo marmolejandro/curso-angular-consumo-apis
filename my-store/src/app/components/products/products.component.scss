@@ -1,27 +1,24 @@
-p.total{
-  position: sticky;
-  top: 66px;
-  background: white;
-  padding: 4px;
-  font-weight: 600;
-  text-align: end;
-  span{
-    font-weight: 500;
-  }
-}
-
-p.counter{
-  font-weight: 600;
-  text-align: end;
-  padding-bottom: 4px;
-  span{
-    font-weight: 500;
-  }
-}
-
 .products-grid{
   display: flex;
   flex-direction: column;
+}
+
+.product-detail{
+  position: fixed;
+  top: 0;
+  left: 50%;
+  bottom: 0;
+  right: 0;
+  background: rgb(243, 243, 243);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition:  all ease-out .5s;
+  transform: translateX(100%);
+
+  &.active{
+    transform: translateX(0);
+  }
 }
 
 // Tablets

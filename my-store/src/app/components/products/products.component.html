@@ -1,24 +1,26 @@
-<p class="total">
-  <span>Total: </span>{{ total | currency: 'COP' + ' ' }}
-</p>
-<p class="counter">
-  <span>Cantidad de productos: </span>{{ myShoppingCart.length }}
-</p>
-<!-- <p>
-  Today: {{ today | date: 'short'}}
-</p>
-<p>
-  Today: {{ today | timeAgo}}
-</p>
-<p>
-  Otra fecha: {{ date | date: 'yyyy/MM/dd'}}
-</p>
-<p>
-  {{ 'hOlA Bascvasas AsAsa' | uppercase }}
-</p> -->
+<!-- <button (click)="toggleProductDetail()">Open</button> -->
 <div class="products-grid">
   <app-product
     [myProduct]="product"
     *ngFor="let product of products"
-    (addedProduct)="onAddToShoppingCart($event)"></app-product>
+    (addedProduct)="onAddToShoppingCart($event)"
+    (showProduct)="onShowDetail($event)"></app-product>
+</div>
+<div class="product-detail" [class.active]="showProductDetail">
+  <div *ngIf="productChosen">
+    <button (click)="toggleProductDetail()">Close</button>
+    <h1> {{productChosen.title}} </h1>
+
+    <swiper-container
+      slides-per-view="1"
+      speed="500"
+      navigation="true"
+    >
+      <swiper-slide *ngFor="let img of productChosen.images">
+        <img [style.width.%]="100" [src]="img" alt="">
+      </swiper-slide>
+    </swiper-container>
+
+    <p> {{productChosen.description}} </p>
+  </div>
 </div>
