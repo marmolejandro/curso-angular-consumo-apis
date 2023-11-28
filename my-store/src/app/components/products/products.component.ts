@@ -28,8 +28,7 @@ export class ProductsComponent implements OnInit {
     // Async
     this.productsService.getAllProducts()
                         .subscribe(data => {
-      this.products = data;
-      this.products = this.replaceImages(this.products);
+      this.products = this.replaceImages(data);
       // console.log(data)
     })
   }
@@ -48,25 +47,26 @@ export class ProductsComponent implements OnInit {
   onShowDetail(id: string){
     this.productsService.getProductById(id)
                         .subscribe(data => {
-                          this.toggleProductDetail();
-                          this.productChosen = data;
 
-                          this.productChosen.images = [
+                          data.images = [
                             'https://source.unsplash.com/random',
                             'https://source.unsplash.com/random'
                           ];
+
+                          this.showProductDetail = true;
+                          this.productChosen = data;
                         })
   }
 
   replaceImages(products: Product[]){
 
-    products.every((elem, index) => {
-      elem.images = [
+    products.every((product) => {
+      product.images = [
         'https://source.unsplash.com/random',
         'https://source.unsplash.com/random'
       ];
 
-      return elem;
+      return product;
     })
 
     return products;

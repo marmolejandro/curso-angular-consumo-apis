@@ -7,20 +7,23 @@
     (showProduct)="onShowDetail($event)"></app-product>
 </div>
 <div class="product-detail" [class.active]="showProductDetail">
-  <div *ngIf="productChosen">
+  <div [style.height.%]="100" *ngIf="productChosen">
     <button (click)="toggleProductDetail()">Close</button>
     <h1> {{productChosen.title}} </h1>
+    <p class="description"> {{productChosen.description}} </p>
+    <p class="price"> {{productChosen.price | currency: 'USD' + ' ' }} </p>
 
-    <swiper-container
-      slides-per-view="1"
-      speed="500"
-      navigation="true"
-    >
-      <swiper-slide *ngFor="let img of productChosen.images">
-        <img [style.width.%]="100" [src]="img" alt="">
-      </swiper-slide>
-    </swiper-container>
-
-    <p> {{productChosen.description}} </p>
+    <h3> Images: </h3>
+    <div class="container-slide">
+      <swiper-container
+        slides-per-view="1"
+        speed="500"
+        navigation="true"
+      >
+        <swiper-slide *ngFor="let img of productChosen.images">
+          <img [src]="img" alt="">
+        </swiper-slide>
+      </swiper-container>
+    </div>
   </div>
 </div>
