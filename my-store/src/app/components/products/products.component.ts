@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product, CreateProductDTO } from '../../models/product.model';
+import { Product, CreateProductDTO, UpdateProductDTO } from '../../models/product.model';
 import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
 
@@ -45,6 +45,8 @@ export class ProductsComponent implements OnInit {
   }
 
   onShowDetail(id: string){
+
+    console.log(id);
     this.productsService.getProductById(id)
                         .subscribe(data => {
 
@@ -53,9 +55,11 @@ export class ProductsComponent implements OnInit {
                             'https://source.unsplash.com/random'
                           ];
 
-                          this.showProductDetail = true;
                           this.productChosen = data;
+                          this.showProductDetail = true;
                         })
+
+
   }
 
   createNewProduct(){
@@ -68,6 +72,39 @@ export class ProductsComponent implements OnInit {
       categoryId: 1
     }
     this.productsService.create(product);
+  }
+
+  updateProduct(){
+
+    const changes: UpdateProductDTO ={
+      title: 'Nuevo title 2',
+    }
+
+    const id = this.productChosen.id;
+    this.productsService.update(id, changes)
+    .subscribe(data => {
+
+      data.images = [
+        'https://source.unsplash.com/random',
+        'https://source.unsplash.com/random'
+      ];
+
+      const productIndex = this.products.findIndex(item => item.id == id);
+      this.products[productIndex] = data;
+    });
+  }
+
+  deleteProduct(){
+
+    const id = this.productChosen.id;
+    this.productsService.delete(id)
+    .subscribe(() => {
+
+      const productIndex = this.products.findIndex(item => item.id == id);
+      this.products.splice(productIndex,1);
+      this.showProductDetail = false;
+    });
+
   }
 
   replaceImages(products: Product[]){

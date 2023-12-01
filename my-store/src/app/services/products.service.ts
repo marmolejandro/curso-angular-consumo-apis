@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Product, CreateProductDTO } from '../models/product.model';
+import { Product, CreateProductDTO, UpdateProductDTO } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +26,15 @@ export class ProductsService {
     .subscribe(data => {
       console.log('created: ', data);
     });
+  }
+
+  update(id: string, dto: UpdateProductDTO){
+    // Patch -> Se envía información parcial
+    // Put -> Se envía toda la información
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, dto);
+  }
+
+  delete(id: string){
+    return this.http.delete<boolean>(`${this.apiUrl}/${id}`);
   }
 }

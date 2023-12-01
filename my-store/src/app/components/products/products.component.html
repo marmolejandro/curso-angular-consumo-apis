@@ -6,12 +6,15 @@
     (addedProduct)="onAddToShoppingCart($event)"
     (showProduct)="onShowDetail($event)"></app-product>
 </div>
+
 <div class="product-detail" [class.active]="showProductDetail">
   <div [style.height.%]="100" *ngIf="productChosen">
     <button (click)="toggleProductDetail()">Close</button>
     <h1> {{productChosen.title}} </h1>
     <p class="description"> {{productChosen.description}} </p>
     <p class="price"> {{productChosen.price | currency: 'USD' + ' ' }} </p>
+    <button (click)="updateProduct()">Editar</button>
+    <button (click)="deleteProduct()">Eliminar</button>
 
     <h3> Images: </h3>
     <div class="container-slide">

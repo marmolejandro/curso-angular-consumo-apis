@@ -13,6 +13,10 @@ export interface Product{
   category: Category
 }
 
+// Omit -> omite los campos indicados
 export interface CreateProductDTO extends Omit<Product, 'id' | 'category'> {
   categoryId: number
 }
+
+// Partial vuelve opcionales los campos del que se está extendiendo
+export interface UpdateProductDTO extends Partial<CreateProductDTO> {}
