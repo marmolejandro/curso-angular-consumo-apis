@@ -15,6 +15,8 @@ export class ProductsComponent implements OnInit {
   products: Product[] = [];
   showProductDetail = false;
   productChosen!: Product;
+  limit = 10;
+  offset = 0;
 
   constructor(
     private storeService: StoreService,
@@ -26,15 +28,21 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     // Async
-    this.productsService.getAllProducts()
-                        .subscribe(data => {
-      this.products = this.replaceImages(data);
-      // console.log(data)
-    })
+    // this.productsService.getAllProducts()
+    // .subscribe(data => {
+    //   this.products = this.replaceImages(data);
+    // })
+
+    // this.productsService.getProductsByPage(10, 0)
+    // .subscribe(data => {
+    //   this.products = this.replaceImages(data);
+    //   this.offset += this.limit;
+    // })
+
+    this.httpGetProductsByPage();
   }
 
   onAddToShoppingCart(product: Product){
-    // console.log(product)
     this.storeService.addProducto(product);
 
     this.total = this.storeService.getTotal();
@@ -105,6 +113,18 @@ export class ProductsComponent implements OnInit {
       this.showProductDetail = false;
     });
 
+  }
+
+  httpGetProductsByPage(){
+    this.productsService.getAllProducts(this.limit, this.offset)
+    .subscribe(data => {
+      this.products = this.products.concat(this.replaceImages(data));
+      this.offset += this.limit
+    })
+  }
+
+  loadMore(){
+    this.httpGetProductsByPage();
   }
 
   replaceImages(products: Product[]){

@@ -4,7 +4,10 @@
     [myProduct]="product"
     *ngFor="let product of products"
     (addedProduct)="onAddToShoppingCart($event)"
-    (showProduct)="onShowDetail($event)"></app-product>
+    (showProduct)="onShowDetail($event)">
+  </app-product>
+
+  <button (click)="loadMore()">Load more</button>
 </div>
 
 <div class="product-detail" [class.active]="showProductDetail">
