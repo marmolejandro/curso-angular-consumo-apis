@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ErrorHandler, OnInit } from '@angular/core';
 import { Product, CreateProductDTO, UpdateProductDTO } from '../../models/product.model';
 import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
@@ -17,6 +17,7 @@ export class ProductsComponent implements OnInit {
   productChosen!: Product;
   limit = 10;
   offset = 0;
+  statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
 
   constructor(
     private storeService: StoreService,
@@ -54,20 +55,26 @@ export class ProductsComponent implements OnInit {
 
   onShowDetail(id: string){
 
-    console.log(id);
-    this.productsService.getProductById(id)
-                        .subscribe(data => {
+    // console.log(id);
+    this.statusDetail = 'loading';
+    this.productsService.getProduct(id)
+    .subscribe({
 
-                          data.images = [
-                            'https://source.unsplash.com/random',
-                            'https://source.unsplash.com/random'
-                          ];
+      next: (data) => {
+        data.images = [
+          'https://source.unsplash.com/random',
+          'https://source.unsplash.com/random'
+        ];
 
-                          this.productChosen = data;
-                          this.showProductDetail = true;
-                        })
-
-
+        this.productChosen = data;
+        this.showProductDetail = true;
+        this.statusDetail = 'success';
+      },
+      error: (response) => {
+        console.error(response)
+        this.statusDetail = 'error';
+      }
+    })
   }
 
   createNewProduct(){

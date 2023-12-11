@@ -9,9 +9,10 @@ import { environment } from './../../environments/environment'
 })
 export class ProductsService {
 
+  // Para desarrollo se connfiguró proxy
+  // private apiUrl = `${environment.API_URL}/api/products`;
+  private apiUrl = `/api/products`;
   // private apiUrl = 'https://young-sands-07814.herokuapp.com/api/products';
-  private apiUrl = `${environment.API_URL}/api/products`;
-  // private apiUrl = 'https://api.escuelajs.co/api/v1/products';
   constructor(
     private http: HttpClient
   ) {}
@@ -30,7 +31,9 @@ export class ProductsService {
     );
   }
 
-  getProductById(id: string){
+  getProduct(id: string){
+
+    console.log(this.apiUrl);
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
