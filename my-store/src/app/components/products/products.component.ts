@@ -1,4 +1,5 @@
-import { Component, ErrorHandler, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
 import { Product, CreateProductDTO, UpdateProductDTO } from '../../models/product.model';
 import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
@@ -54,7 +55,6 @@ export class ProductsComponent implements OnInit {
   }
 
   onShowDetail(id: string){
-
     // console.log(id);
     this.statusDetail = 'loading';
     this.productsService.getProduct(id)
@@ -75,8 +75,27 @@ export class ProductsComponent implements OnInit {
     })
   }
 
-  createNewProduct(){
+  readAndUpdate(id: string){
+    // Se usa switchMap cuando hay dependencias en las peticiones
+    this.productsService.getProduct(id)
+    .pipe(
+      switchMap((product) => this.productsService.update(product.id, {title: 'change'}))
+      // En caso de necesitarse algo adicional con la respuesta del updat seria agregar otro switchMap
+      // switchMap((product) => this.productsService.update(product.id, {title: 'change'}))
+    )
+    .subscribe(data => {
+      console.log(data)
+    });
 
+    // Servicio donde se usa zip para peticiones en paralelo
+    this.productsService.fetchReadAndUpdate(id, {title: 'change'})
+    .subscribe(response => {
+      const product = response[0];
+      const update = response[1];
+    })
+  }
+
+  createNewProduct(){
     const product: CreateProductDTO ={
       title: 'Nuevo producto',
       price: 1,
@@ -88,7 +107,6 @@ export class ProductsComponent implements OnInit {
   }
 
   updateProduct(){
-
     const changes: UpdateProductDTO ={
       title: 'Nuevo title 2',
     }
@@ -96,23 +114,19 @@ export class ProductsComponent implements OnInit {
     const id = this.productChosen.id;
     this.productsService.update(id, changes)
     .subscribe(data => {
-
       data.images = [
         'https://source.unsplash.com/random',
         'https://source.unsplash.com/random'
       ];
-
       const productIndex = this.products.findIndex(item => item.id == id);
       this.products[productIndex] = data;
     });
   }
 
   deleteProduct(){
-
     const id = this.productChosen.id;
     this.productsService.delete(id)
     .subscribe(() => {
-
       const productIndex = this.products.findIndex(item => item.id == id);
       this.products.splice(productIndex,1);
       this.showProductDetail = false;
@@ -133,16 +147,13 @@ export class ProductsComponent implements OnInit {
   }
 
   replaceImages(products: Product[]){
-
     products.every((product) => {
       product.images = [
         'https://source.unsplash.com/random',
         'https://source.unsplash.com/random'
       ];
-
       return product;
     })
-
     return products;
   }
 }

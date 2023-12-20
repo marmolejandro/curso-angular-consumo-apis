@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { retry, catchError, map } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, zip } from 'rxjs';
 import { Product, CreateProductDTO, UpdateProductDTO } from '../models/product.model';
 import { environment } from './../../environments/environment'
 
@@ -24,7 +24,6 @@ export class ProductsService {
   ) {}
 
   getAllProducts(limit?: number, offset?: number){
-
     let params = new HttpParams();
     if(limit && offset){
       params = params.set('limit', limit);
@@ -44,8 +43,15 @@ export class ProductsService {
     );
   }
 
-  getProduct(id: string){
+  fetchReadAndUpdate(id: string, dto: UpdateProductDTO){
+    // Usar zip cuando las peticiones no dependen de ellas pero se necesitan enviar al tiempo
+    return zip(
+      this.getProduct(id),
+      this.update(id, dto)
+    )
+  }
 
+  getProduct(id: string){
     console.log(this.apiUrl);
     return this.http.get<Product>(`${this.apiUrl}/${id}`)
     .pipe(
