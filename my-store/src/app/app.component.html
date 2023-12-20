@@ -4,4 +4,7 @@
 <app-img *ngIf="showImg" (loaded)="onLoaded($event)" [img]="imgParent"></app-img> -->
 
 <app-nav></app-nav>
+<button (click)="createUser()">Create user</button>
+<button (click)="login()">Login</button>
+<hr>
 <app-products></app-products>
