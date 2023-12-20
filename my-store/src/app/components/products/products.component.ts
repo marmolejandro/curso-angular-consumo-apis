@@ -59,19 +59,17 @@ export class ProductsComponent implements OnInit {
     this.statusDetail = 'loading';
     this.productsService.getProduct(id)
     .subscribe({
-
       next: (data) => {
         data.images = [
           'https://source.unsplash.com/random',
           'https://source.unsplash.com/random'
         ];
-
         this.productChosen = data;
         this.showProductDetail = true;
         this.statusDetail = 'success';
       },
-      error: (response) => {
-        console.error(response)
+      error: (errorMsg) => {
+        window.alert(errorMsg)
         this.statusDetail = 'error';
       }
     })
