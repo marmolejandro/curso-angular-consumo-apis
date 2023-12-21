@@ -3,6 +3,7 @@ import { StoreService } from '../../services/store.service';
 import { AuthService } from '../../services/auth.service';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../models/user.model';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav',
