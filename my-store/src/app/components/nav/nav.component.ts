@@ -3,7 +3,7 @@ import { StoreService } from '../../services/store.service';
 import { AuthService } from '../../services/auth.service';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../models/user.model';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav',
@@ -34,20 +34,23 @@ export class NavComponent implements OnInit {
   }
 
   login(){
+    // Se consume servicio de login
     this.authService.login('alejo@gmail.com', '121212')
-    .subscribe(rta => {
-      this.token = rta.access_token;
-      console.log(this.token);
-      this.getProfile();
-    })
-  }
+    .pipe(
+      tap(token => {
+        console.log(this.token);
+        this.token = token.access_token;
+      }),
+      switchMap(() => {
+        // Se consume servicio de obtener perfil
+        return this.authService.profile(this.token)
 
-  getProfile(){
-    console.log(this.token);
-    this.authService.profile(this.token)
+      })
+    )
     .subscribe(profile => {
-      console.log(profile);
-      this.profile = profile;
-    });
+        console.log(profile);
+        this.profile = profile;
+      }
+    );
   }
 }
