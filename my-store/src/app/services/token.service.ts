@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { environment } from './../../environments/environment'
-import { User, CreateUserDTO } from './../models/user.model'
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +10,26 @@ export class TokenService {
   private apiUrl = `${environment.API_URL}/api/auth`;
 
   constructor(
-    private http: HttpClient
+    private cookieService: CookieService
   ) {}
+
+  localStorage = {};
+
+  saveToken(token: string){
+    this.removeToken();
+    this.cookieService.set('token', token);
+
+    const prueba = this.getToken();
+    console.warn(`prueba: ${prueba}`)
+  }
+
+  getToken(){
+    const token = this.cookieService.get("token")
+    return token;
+  }
+
+  removeToken() {
+    this.cookieService.deleteAll('/')
+    this.cookieService.delete("token", '/');
+  }
 }

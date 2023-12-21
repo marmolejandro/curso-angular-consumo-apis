@@ -1,14 +1,28 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { Injectable } from '@angular/core'
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor
+} from '@angular/common/http'
+import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 
-export const TimeInterceptor: HttpInterceptorFn = (req, next) => {
+@Injectable()
+export class TimeInterceptor implements HttpInterceptor{
 
-  const start = performance.now();
-  return next(req)
-  .pipe(
-    tap(() => {
-      const time = (performance.now() - start) + 'ms'
-      console.info(req.url, time);
-    })
-  );
-};
+  constructor(){}
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    
+    const start = performance.now();
+    return next
+    .handle(request)
+    .pipe(
+      tap(req => {
+        const time = (performance.now() - start) + 'ms';
+        console.log(request.url, time);
+      })
+    )
+  }
+}

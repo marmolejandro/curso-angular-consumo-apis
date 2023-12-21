@@ -14,6 +14,7 @@ import { ReversePipe } from './pipes/reverse.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { HighlightDirective } from './directives/highlight.directive';
 import { TimeInterceptor } from './interceptors/time.interceptor'
+import { TokenInterceptor } from './interceptors/token.interceptor'
 
 // import function to register Swiper custom elements
 import { register } from 'swiper/element/bundle';
@@ -38,9 +39,10 @@ register();
     FormsModule,
     HttpClientModule
   ],
-  providers: [
+  providers: [    
     // provideClientHydration()
-    // { provide: HTTP_INTERCEPTORS, useClass: TimeInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: TimeInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
   ],
   
   bootstrap: [AppComponent],
