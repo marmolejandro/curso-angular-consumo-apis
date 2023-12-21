@@ -85,7 +85,7 @@ export class ProductsComponent implements OnInit {
       // switchMap((product) => this.productsService.update(product.id, {title: 'change'}))
     )
     .subscribe(data => {
-      console.log(data)
+      // console.log(data)
     });
 
     // Servicio donde se usa zip para peticiones en paralelo

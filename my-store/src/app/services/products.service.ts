@@ -9,6 +9,7 @@ import { retry, catchError, map } from 'rxjs/operators';
 import { throwError, zip } from 'rxjs';
 import { Product, CreateProductDTO, UpdateProductDTO } from '../models/product.model';
 import { environment } from './../../environments/environment'
+import { checkTime } from './../interceptors/time.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -34,12 +35,11 @@ export class ProductsService {
     if(limit !== null && offset !== null && limit !== undefined && offset !== undefined){
       params = params.set('limit', limit);
       params = params.set('offset', offset);
-      
-      console.log(`Limit: ${limit} Offset: ${offset} Params: ${params}`)
+      // console.log(`Limit: ${limit} Offset: ${offset} Params: ${params}`)
     }
 
 
-    return this.http.get<Product[]>(this.apiUrl, {params})
+    return this.http.get<Product[]>(this.apiUrl, {params, context: checkTime()})
     .pipe(
       retry(3),
       map(products => products.map(item => {
@@ -61,7 +61,7 @@ export class ProductsService {
   }
 
   getProduct(id: string){
-    console.log(this.apiUrl);
+    // console.log(this.apiUrl);
     return this.http.get<Product>(`${this.apiUrl}/${id}`)
     .pipe(
       catchError((error: HttpErrorResponse) => {
