@@ -41,6 +41,7 @@ export class ProductsComponent implements OnInit {
     //   this.offset += this.limit;
     // })
 
+    console.warn(`Limit: ${this.limit} Offset: ${this.offset}`)
     this.httpGetProductsByPage();
   }
 
@@ -137,6 +138,7 @@ export class ProductsComponent implements OnInit {
   httpGetProductsByPage(){
     this.productsService.getAllProducts(this.limit, this.offset)
     .subscribe(data => {
+      // this.products = data;
       this.products = this.products.concat(this.replaceImages(data));
       this.offset += this.limit
     })
