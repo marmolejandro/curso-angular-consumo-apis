@@ -5,6 +5,16 @@
 
 <app-nav></app-nav>
 <button (click)="createUser()">Create user</button>
+<p>
+    <a href="../assets/files/texto.txt">Descargar</a>
+</p>
+<p>
+    <button (click)="downloadPDF()">Descargar PDF</button>
+</p>
+<p>
+    <input type="file" (change)="onUpload($event)">
+    <img *ngIf="imgRta" [src]="imgRta" alt="">
+</p>
 <!-- <button (click)="login()">Login</button>
 <button (click)="getProfile()">Get profile</button> -->
 <hr>
