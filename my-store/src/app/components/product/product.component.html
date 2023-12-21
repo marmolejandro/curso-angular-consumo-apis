@@ -3,7 +3,7 @@
 
 <h2>{{ product.price | currency: 'USD' + ' ' }}</h2>
 <p class="title">{{ product.title }}</p>
-<p class="title">{{ product?.taxes | currency: 'USD' + ' '  }}</p>
+<p class="title">{{ product.taxes | currency: 'USD' + ' '  }}</p>
 
 <button (click)="onShowDetails()">View details</button>
 <button (click)="onAddToCart()">Add cart</button>

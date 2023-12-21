@@ -9,15 +9,15 @@ import { environment } from './../../environments/environment'
   providedIn: 'root'
 })
 export class ProductsService {
+  
+    // Url original
+    // private apiUrl = 'https://young-sands-07814.herokuapp.com/api/products';
 
   // Para desarrollo se connfiguró proxy
   // private apiUrl = `/api/products`;
 
   // Para implementacion de ambientes
   private apiUrl = `${environment.API_URL}/api/products`;
-
-  // Url original
-  // private apiUrl = 'https://young-sands-07814.herokuapp.com/api/products';
 
   constructor(
     private http: HttpClient
